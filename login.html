@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In | DolFind</title>
+    <link rel="icon" type="image/jpeg" href="assets/brand/dolfind-mascot-badge.jpg">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+
+    <header class="navbar">
+        <a href="index.html" class="logo" aria-label="DolFind home"><img src="assets/brand/dolfind-logo.jpg" alt="DolFind" width="1536" height="1024"></a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="register.html">Register</a>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <section class="form-card">
+            <h1>Welcome back</h1>
+            <p class="form-description">
+                Log in to manage your lost-and-found reports.
+            </p>
+
+            <form id="login-form">
+                <label for="email">Email address</label>
+                <input
+                    type="email"
+                    id="email"
+                    autocomplete="email"
+                    required
+                >
+
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button type="submit" id="login-button">
+                    Log in
+                </button>
+
+                <p id="auth-message" class="message" role="status" aria-live="polite"></p>
+            </form>
+
+            <p class="form-link">
+                Don’t have an account?
+                <a href="register.html">Register</a>
+            </p>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>

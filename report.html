@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report an Item | DolFind</title>
+    <link rel="icon" type="image/jpeg" href="assets/brand/dolfind-mascot-badge.jpg">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+    <header class="navbar"><a class="logo" href="index.html" aria-label="DolFind home"><img src="assets/brand/dolfind-logo.jpg" alt="DolFind" width="1536" height="1024"></a><nav aria-label="Main navigation"><a href="index.html#items">Browse items</a><a href="index.html">Home</a></nav></header>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <main id="main" class="auth-container report-layout">
+        <aside class="report-guide"><a class="back-link" href="index.html#items">← Back to the noticeboard</a><p class="eyebrow">A SMALL ACT OF KINDNESS</p><h2>Someone’s day<br>could start<br>looking up.</h2><p>A few helpful details can bring a lost item one step closer to home.</p><ol><li><strong>Describe the item</strong><span>Share its color, type, and the place it was lost or found.</span></li><li><strong>Add a clear photo</strong><span>A picture makes it easier to recognize. Keep personal information out of view.</span></li><li><strong>We’ll review your report</strong><span>Once approved, it will appear on the campus noticeboard.</span></li></ol><img src="assets/brand/dolfind-mascot-badge.jpg" alt="" width="1024" height="1024"></aside>
+        <section class="form-card report-card" aria-labelledby="report-title">
+            <p class="eyebrow">HELP IT FIND ITS WAY HOME</p>
+            <h1 id="report-title">Report an item</h1>
+            <p class="form-description">Lost something or found something on campus? Share the details below. Reports are reviewed before appearing publicly.</p>
+            <p id="report-message" class="message" role="status" aria-live="polite">Checking your account…</p>
+            <a id="report-login" href="login.html" hidden>Log in to submit a report</a>
+            <button id="report-retry" type="button" class="secondary-button" hidden>Retry setup</button>
+            <form id="report-form">
+                <fieldset id="report-fields" disabled>
+                    <label for="item-type">What happened?</label>
+                    <select id="item-type" required><option value="">Choose lost or found</option><option value="lost">I lost an item</option><option value="found">I found an item</option></select>
+                    <label for="item-title">Item name</label>
+                    <input id="item-title" required minlength="3" maxlength="120" placeholder="For example, a blue notebook">
+                    <label for="category">Category</label>
+                    <select id="category" required><option value="">Choose a category</option></select>
+                    <label for="description">Description</label>
+                    <textarea id="description" required minlength="10" maxlength="1000" rows="4" aria-describedby="description-help description-count" placeholder="Describe its color, appearance, and other helpful details."></textarea><small id="description-count" class="character-count">0 / 1,000 characters</small>
+                    <small id="description-help">Keep phone numbers, student IDs, and other private information out of public reports. Keep one identifying detail private to verify ownership.</small>
+                    <label for="location">Campus location</label>
+                    <input id="location" required minlength="2" maxlength="120" placeholder="For example, library, second floor">
+                    <label for="event-date">Date lost or found</label>
+                    <input id="event-date" type="date" required>
+                    <div class="photo-upload">
+                        <label for="report-photo">Add a photo <span class="optional">(optional)</span></label>
+                        <p>A clear photo helps people recognize their belongings.</p>
+                        <input id="report-photo" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="photo-message">
+                        <p id="photo-message" role="status">Optional · JPG, PNG or WebP · Up to 2 MB</p>
+                        <img id="photo-preview" alt="Selected report photo preview" hidden>
+                        <button id="remove-photo" type="button" class="secondary-button" hidden>Remove photo</button>
+                    </div>
+                    <section class="contact-form-section" aria-labelledby="contact-form-title">
+                        <h2 id="contact-form-title">How can someone reach you? <span class="optional">(optional)</span></h2>
+                        <p>Leave one contact method so someone can ask about your item. Only signed-in PCU members can view it after your report is approved.</p>
+                        <label for="contact-method">Preferred contact method</label>
+                        <select id="contact-method"><option value="">Do not share contact details</option><option value="email">School email</option><option value="messenger">Messenger / Facebook profile</option><option value="phone">Mobile number</option></select>
+                        <div id="contact-fields" hidden>
+                            <label id="contact-value-label" for="contact-value">Contact details</label>
+                            <input id="contact-value" maxlength="300" autocomplete="off" disabled aria-describedby="contact-help">
+                            <p id="contact-help"></p>
+                            <label class="contact-consent"><input id="contact-consent" type="checkbox" disabled><span>I agree to show these contact details to signed-in PCU members on this report.</span></label>
+                        </div>
+                        <p class="contact-footnote">Your account email is never added automatically. Keep contact details out of the public description and photo.</p>
+                    </section>
+                    <button id="submit-report" type="submit">Submit for approval →</button>
+                </fieldset>
+            </form>
+            <div id="report-success" hidden><p>Your report is pending administrator approval. It won’t appear in public listings until approved.</p><a href="my-reports.html" class="button-link">View my reports</a><button id="report-another" class="secondary-button" type="button">Report another item</button></div>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script><script src="js/supabase.js"></script><script src="js/photos.js"></script><script src="js/account.js"></script><script src="js/contact.js"></script><script src="js/report.js"></script><script src="js/ui.js"></script>
+</body>
+</html>

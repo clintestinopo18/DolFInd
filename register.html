@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | DolFind</title>
+    <link rel="icon" type="image/jpeg" href="assets/brand/dolfind-mascot-badge.jpg">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+
+    <header class="navbar">
+        <a href="index.html" class="logo" aria-label="DolFind home"><img src="assets/brand/dolfind-logo.jpg" alt="DolFind" width="1536" height="1024"></a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="login.html">Log in</a>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <section class="form-card">
+            <h1>Create an account</h1>
+            <p class="form-description">
+                Register using your @pcu.edu.ph email. Confirm your email to activate your account.
+            </p>
+
+            <form id="register-form">
+                <label for="full-name">Full name</label>
+                <input
+                    type="text"
+                    id="full-name"
+                    autocomplete="name"
+                    required
+                    minlength="2"
+                    maxlength="100"
+                >
+
+                <label for="email">Email address</label>
+                <input
+                    type="email"
+                    id="email"
+                    autocomplete="email"
+                    required
+                >
+
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    autocomplete="new-password"
+                    required
+                    minlength="6"
+                >
+
+                <label for="confirm-password">Confirm password</label>
+                <input
+                    type="password"
+                    id="confirm-password"
+                    autocomplete="new-password"
+                    required
+                    minlength="6"
+                >
+
+                <button type="submit" id="register-button">
+                    Create account
+                </button>
+
+                <button type="button" id="resend-button" class="secondary-button">
+                    Resend confirmation email
+                </button>
+
+                <p id="auth-message" class="message" role="status" aria-live="polite"></p>
+            </form>
+
+            <p class="form-link">
+                Already registered?
+                <a href="login.html">Log in</a>
+            </p>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>

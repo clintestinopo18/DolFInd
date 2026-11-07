@@ -1,0 +1,11 @@
+.git
+.vercel
+.vscode
+node_modules
+tests
+supabase
+*.md
+**/*.md
+.env
+.env.*
+*.log

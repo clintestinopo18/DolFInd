@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Reports | DolFind</title>
+    <link rel="icon" type="image/jpeg" href="assets/brand/dolfind-mascot-badge.jpg">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <a class="skip-link" href="#admin-main">Skip to content</a>
+    <header class="navbar"><a class="logo" href="index.html" aria-label="DolFind home"><img src="assets/brand/dolfind-logo.jpg" alt="DolFind" width="1536" height="1024"></a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="report.html">Report an item</a></nav></header>
+    <main id="admin-main" class="admin-main">
+        <p class="eyebrow">ADMINISTRATOR WORKSPACE</p>
+        <h1>Review campus reports</h1>
+        <p class="form-description">Check descriptions for accuracy and personal information before publishing. Approved reports appear on the home page; rejected reports remain private.</p>
+        <p id="admin-message" class="message" role="status" aria-live="polite">Checking administrator access…</p>
+        <a id="admin-login" href="login.html" hidden>Log in with an administrator account</a>
+        <button id="admin-retry" type="button" class="secondary-button" hidden>Retry access check</button>
+        <section id="admin-content" hidden aria-label="Report review">
+            <div class="filter-bar"><div><label for="admin-status">Report status</label><select id="admin-status"><option value="pending">Pending review</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="claimed">Claimed</option></select></div><button id="admin-refresh" type="button" class="secondary-button">Refresh reports</button></div>
+            <p id="admin-results" role="status"></p>
+            <div id="admin-grid" class="item-grid"></div>
+            <div class="admin-pagination"><button id="admin-prev" class="secondary-button" disabled>Previous</button><span id="admin-page">Page 1</span><button id="admin-next" class="secondary-button" disabled>Next</button></div>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/supabase.js"></script><script src="js/photos.js"></script><script src="js/account.js"></script><script src="js/admin.js"></script><script src="js/ui.js"></script>
+</body>
+</html>
