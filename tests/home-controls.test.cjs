@@ -5,7 +5,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const flush = () => new Promise(setImmediate);
 
-function setup(search = '') {
+function setup(search = '', response = null) {
     function node(value = '') {
         return { value, hidden: false, children: [], attributes: {}, handlers: {}, dataset: {}, options: [],
             setAttribute(key, value) { this.attributes[key] = value; },
@@ -31,7 +31,7 @@ function setup(search = '') {
         history: { replaceState(_state, _title, url) { Object.assign(location, { search: new URL(url, 'https://dolfind.example').search }); } },
         Option: function(text, value) { this.text = String(text); this.value = String(value); }, setTimeout, clearTimeout,
         document: { getElementById: get, createElement: () => node(), querySelectorAll: selector => selector === '[data-report-type]' ? types : selector === '[data-clear-filters]' ? [clear] : [] },
-        window: { publicReports: { date: value => value, list: async options => { calls.push(options); return { data: [item], count: 50 }; } },
+        window: { publicReports: { date: value => value, list: async options => { calls.push(options); return response || { data: [item], count: 50 }; } },
             reportPhotos: { mount() {} }, supabaseClient: { from: () => ({ select: () => ({ order: async () => ({ data: [{ id: 3, name: 'Books' }] }) }) }) } }
     };
     for (const file of ['browse-state.js', 'home.js']) vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../js/' + file), 'utf8'), context);
@@ -48,6 +48,20 @@ test('restored filters select the correct quick view and retain result links', a
     const link = page.get('item-grid').children[0].href;
     const back = new URL(link, 'https://dolfind.example').searchParams.get('back');
     assert.equal(new URLSearchParams(back).get('page'), '2');
+});
+test('empty filtered searches offer clearing filters and then show the unfiltered empty state', async () => {
+    const page = setup('?search=notebook&type=lost', { data: [], count: 0 }); await flush();
+    assert.equal(page.get('browse-empty-title').textContent, 'No reports match your search');
+    assert.equal(page.clear.hidden, false);
+    page.clear.handlers.click(); await flush();
+    assert.equal(page.get('browse-empty-title').textContent, 'No public reports yet');
+    assert.equal(page.calls.at(-1).search, ''); assert.equal(page.clear.hidden, true);
+});
+test('loading failure offers retry with the same search rather than showing no results', async () => {
+    const page = setup('?search=notebook&type=lost', { error: { message: 'Network' } }); await flush();
+    assert.equal(page.get('empty-reports').hidden, true); assert.equal(page.get('retry-button').hidden, false);
+    page.get('retry-button').handlers.click(); await flush();
+    assert.equal(page.calls.at(-1).search, 'notebook'); assert.equal(page.calls.at(-1).type, 'lost');
 });
 test('quick views reset pagination and clear restores all defaults', async () => {
     const page = setup('?search=blue&type=found&status=approved&page=2'); await flush();

@@ -40,7 +40,7 @@ test('network failure offers retry', async () => {
 });
 test('returned reports use closed-report guidance', async () => {
     const page = setup({ data: { ...report, status: 'claimed' }, error: null }); await flush();
-    assert.equal(page.get('detail-status').textContent, 'Returned / claimed');
+    assert.equal(page.get('detail-status').textContent, 'Returned');
     assert.equal(page.get('next-step-title').textContent, 'This report is closed');
 });
 test('clipboard denial provides a selectable link and explains localhost', async () => {

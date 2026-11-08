@@ -15,10 +15,10 @@
     <div class="section-heading"><div><h1>My reports</h1><p class="form-description">Check approval status and manage your reports.</p></div><a class="button-link" href="report.html">Report an item </a></div>
     <p id="my-reports-notice" class="message" role="status" aria-live="polite"></p>
     <a id="my-reports-login" class="secondary-link" href="login.html?next=my-reports.html" hidden>Log in to view your reports </a>
-    <div class="filter-bar"><div><label for="my-status">Report status</label><select id="my-status"><option value="all">All my reports</option><option value="pending">Pending review</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="claimed">Returned / claimed</option></select></div><button id="my-refresh" class="secondary-button" type="button">Refresh reports</button></div>
+    <div class="filter-bar"><div><label for="my-status">Report status</label><select id="my-status"><option value="all">All my reports</option><option value="pending">Pending review</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="claimed">Returned</option></select></div><button id="my-refresh" class="secondary-button" type="button">Refresh reports</button></div>
     <p id="my-results" role="status" tabindex="-1">Checking your account…</p>
     <div id="my-report-grid" class="item-grid"></div>
-    <div id="my-empty" class="empty-state" hidden><h2>No reports here yet</h2><p>Reports you submit will appear here. Try another status or create your first report.</p><a href="report.html" class="button-link">Report an item</a></div>
+    <div id="my-empty" class="empty-state" hidden><h2 id="my-empty-title">You have not submitted a report yet</h2><p id="my-empty-copy">Lost or found something on campus? Create a report and track its approval here.</p><div class="hero-actions"><button id="my-clear-status" type="button" class="secondary-button" hidden>Show all my reports</button><a href="report.html" class="button-link">Report an item</a></div></div>
     <nav id="my-pagination" class="browse-pagination" aria-label="My report pages" hidden><button id="my-prev" type="button" class="secondary-button"> Previous</button><span id="my-page"></span><button id="my-next" type="button" class="secondary-button">Next </button></nav>
   </main>
   <dialog id="return-report-dialog" class="account-dialog" aria-labelledby="return-report-heading" aria-describedby="return-report-description">

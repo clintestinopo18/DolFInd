@@ -2,7 +2,7 @@
     const el = id => document.getElementById(id);
     const content = el('admin-content'), grid = el('admin-grid'), filter = el('admin-status');
     const dialog = el('review-dialog'), reason = el('review-reason');
-    const labels = { pending: 'Pending review', approved: 'Approved', rejected: 'Rejected', claimed: 'Returned / claimed' };
+    const labels = { pending: 'Pending review', approved: 'Approved', rejected: 'Rejected', claimed: 'Returned' };
     let page = 0, total = 0, busy = false, saving = false, history = false, generation = 0, owner = null, selected = null, opener = null;
     const notice = (text, type = '') => { el('admin-message').textContent = text; el('admin-message').className = `message ${type}`; };
     function controls() {
@@ -67,6 +67,25 @@
         if (entry.reason) card.append(node('p',entry.reason,'review-feedback'));
         grid.append(card);
     }
+    function renderEmpty(failed = false) {
+        const panel = node('div','','empty-state');
+        const title = failed ? (history ? 'Review history could not be loaded' : 'Reports could not be loaded')
+            : history ? 'No review decisions recorded yet' : filter.value === 'pending' ? 'No reports waiting for review' : `No reports with status: ${labels[filter.value]}`;
+        const copy = failed ? 'Check your connection and try again. Your current view and filters have been kept.'
+            : history ? 'Approvals, rejections, and returns to review will appear here after a decision is saved. Decisions from before history was enabled are not included.'
+            : filter.value === 'pending' ? 'New reports and edited reports will appear here when they need approval. You can check previous decisions in Review history.'
+            : 'Choose another status to review other campus reports.';
+        panel.append(node('h2',title),node('p',copy));
+        const button = node('button',failed ? 'Try again' : history || filter.value !== 'pending' ? 'View pending reports' : 'View review history','secondary-button');
+        button.type = 'button';
+        button.addEventListener('click',()=>{
+            if(busy || saving)return;
+            if(failed){notice('');load();}
+            else if(history || filter.value !== 'pending'){filter.value='pending';switchView(false);}
+            else switchView(true);
+        });
+        panel.append(button);grid.append(panel);
+    }
     async function load() {
         const request = ++generation; busy = true; controls(); grid.replaceChildren(); grid.setAttribute('aria-busy','true');
         el('admin-results').textContent = history ? 'Loading review history...' : 'Loading reports...';
@@ -76,11 +95,13 @@
             total = result.count;
             if (!result.items.length && page > 0) { page = Math.max(0,Math.ceil(total/12)-1); return load(); }
             result.items.forEach(history ? renderHistory : renderReport);
+            if (!total) renderEmpty();
             el('admin-results').textContent = history ? `${total} recorded decision${total === 1 ? '' : 's'}` : total ? `${total} report${total === 1 ? '' : 's'} · ${labels[filter.value]}` : `No reports: ${labels[filter.value].toLowerCase()}.`;
             el('admin-page').textContent = `Page ${page+1} of ${Math.max(1,Math.ceil(total/12))}`;
         } catch (error) {
             if (request !== generation) return;
-            total = 0; el('admin-results').textContent = 'Could not load this view. Use Refresh to try again.'; notice(error.message,'error');
+            total = 0; grid.replaceChildren(); renderEmpty(true);
+            el('admin-results').textContent = 'Could not load this view.'; notice(error.message,'error');
         } finally { if (request === generation) { busy = false; grid.setAttribute('aria-busy','false'); controls(); } }
     }
     el('review-dialog-form').addEventListener('submit', async event => {

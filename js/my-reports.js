@@ -21,7 +21,7 @@
     let page = 0, total = 0, version = 0;
     let owner = null, selection = null, opener = null;
     let loading = false, deleting = false;
-    const labels = { pending: 'Pending review', approved: 'Approved', rejected: 'Rejected', claimed: 'Returned / claimed' };
+    const labels = { pending: 'Pending review', approved: 'Approved', rejected: 'Rejected', claimed: 'Returned' };
     function controls() {
         const busy = loading || deleting || returning || preparingReturn;
         status.disabled = busy; refresh.disabled = busy;
@@ -111,10 +111,16 @@
             response.data.forEach(render);
             results.textContent = `${total} report${total === 1 ? '' : 's'}${status.value === 'all' ? '' : ' · ' + labels[status.value]}`;
             empty.hidden = total !== 0; pagination.hidden = total <= 12;
+            if (!total) {
+                const filtered = status.value !== 'all';
+                document.getElementById('my-empty-title').textContent = filtered ? `No reports with status: ${labels[status.value]}` : 'You have not submitted a report yet';
+                document.getElementById('my-empty-copy').textContent = filtered ? 'Try viewing all your reports to find the one you need.' : 'Lost or found something on campus? Create a report and track its approval here.';
+                document.getElementById('my-clear-status').hidden = !filtered;
+            }
             document.getElementById('my-page').textContent = `Page ${page + 1} of ${Math.max(1, Math.ceil(total / 12))}`;
         } catch (error) {
             if (request !== version) return;
-            results.textContent = error.message;
+            results.textContent = 'Your reports could not be loaded. Check your connection, then choose Refresh reports. Your selected status has been kept.';
         } finally {
             if (request === version) { loading = false; grid.setAttribute('aria-busy', 'false'); controls(); }
         }
@@ -157,6 +163,10 @@
         } finally { returning = false; controls(); }
     });
     refresh.addEventListener('click', () => { if (!loading && !deleting) load(); });
+    document.getElementById('my-clear-status').addEventListener('click', () => {
+        if (loading || deleting || returning || preparingReturn) return;
+        status.value = 'all'; page = 0; load(); results.focus();
+    });
     status.addEventListener('change', () => { page = 0; load(); });
     previous.addEventListener('click', () => { if (!loading && !deleting && page > 0) { page--; load(); results.focus(); } });
     next.addEventListener('click', () => { if (!loading && !deleting && (page + 1) * 12 < total) { page++; load(); results.focus(); } });

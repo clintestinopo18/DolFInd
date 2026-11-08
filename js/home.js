@@ -51,7 +51,7 @@
         const top = document.createElement('div'); top.className = 'card-topline';
         const badge = document.createElement('span');
         badge.className = `badge ${item.status === 'claimed' ? 'returned' : item.item_type}`;
-        badge.textContent = item.status === 'claimed' ? 'Returned / claimed' : `${item.item_type === 'found' ? 'Found' : 'Lost'} item`;
+        badge.textContent = item.status === 'claimed' ? 'Returned' : `${item.item_type === 'found' ? 'Found' : 'Lost'} item`;
         const category = document.createElement('span'); category.className = 'card-category';
         category.textContent = item.categories?.name || 'Other'; top.append(badge, category);
         const title = document.createElement('h3'); title.textContent = item.title;
@@ -84,13 +84,21 @@
             const start = page * 12 + 1;
             results.textContent = total ? `${start}–${start + data.length - 1} of ${total} report${total === 1 ? '' : 's'}` : 'No reports to show';
             empty.hidden = total !== 0;
+            if (!total) {
+                const current = filters();
+                const filtered = Boolean(current.search.trim() || ['type','category','status'].some(key => current[key] !== 'all'));
+                document.getElementById('browse-empty-title').textContent = filtered ? 'No reports match your search' : 'No public reports yet';
+                document.getElementById('browse-empty-copy').textContent = filtered
+                    ? 'Try a shorter keyword, a different campus location, or clear your search and filters. You can also report the item yourself.'
+                    : 'Reports appear here after approval. If you lost or found something, submit a report to get started.';
+            }
             pagination.hidden = total <= 12;
             previous.disabled = page === 0; next.disabled = (page + 1) * 12 >= total;
             document.getElementById('browse-page').textContent = `Page ${page + 1} of ${Math.max(1, Math.ceil(total / 12))}`;
         } catch {
             if (version !== request) return;
             grid.replaceChildren();
-            results.textContent = 'Reports could not be loaded. Check your connection and try again.';
+            results.textContent = 'Reports could not be loaded. Check your connection, then choose Try again. Your search and filters have been kept.';
             retry.hidden = false;
         } finally { if (version === request) grid.setAttribute('aria-busy', 'false'); }
     }

@@ -49,7 +49,7 @@
             details.hidden = false;
         } catch {
             if (request !== version) return;
-            message.textContent = 'Contact details are temporarily unavailable. Please try again later.';
+            message.textContent = 'Contact details could not be loaded. Check your connection, then choose Retry contact details.';
             retry.hidden = false;
         }
     }

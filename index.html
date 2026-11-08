@@ -82,7 +82,7 @@
           <summary id="more-filters-label">More filters</summary>
           <div class="browse-filters">
             <div><label for="category-filter">Category</label><select id="category-filter"><option value="all">All categories</option></select></div>
-            <div><label for="status-filter">Status</label><select id="status-filter"><option value="all">All public reports</option><option value="approved">Open reports</option><option value="claimed">Returned / claimed</option></select></div>
+            <div><label for="status-filter">Status</label><select id="status-filter"><option value="all">All public reports</option><option value="approved">Approved</option><option value="claimed">Returned</option></select></div>
             <div><label for="sort-filter">Sort by</label><select id="sort-filter"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></div>
           </div>
         </details>
@@ -90,7 +90,7 @@
       <p id="category-note" class="form-description" hidden>Categories are temporarily unavailable. You can still search and browse reports.</p>
       <div class="browse-toolbar"><p id="results-message" role="status" tabindex="-1">Loading campus reports...</p><button type="button" class="text-button" data-clear-filters hidden>Clear filters</button></div>
       <div id="item-grid" class="item-grid"></div><button id="retry-button" class="secondary-button" type="button" hidden>Try again</button>
-      <div id="empty-reports" class="empty-state" hidden><h3>No matching items yet</h3><p>Try a different word or clear your filters. If your item isn’t here, you can create a report.</p><div class="hero-actions"><button type="button" class="secondary-button" data-clear-filters>Clear filters</button><a class="button-link" href="report.html">Report an item</a></div></div>
+      <div id="empty-reports" class="empty-state" hidden><h3 id="browse-empty-title">No public reports yet</h3><p id="browse-empty-copy">Reports appear here after approval. If you lost or found something, submit a report to get started.</p><div class="hero-actions"><button type="button" class="secondary-button" data-clear-filters>Clear search and filters</button><a class="button-link" href="report.html">Report an item</a></div></div>
       <nav id="browse-pagination" class="browse-pagination" aria-label="Report pages" hidden><button id="browse-prev" class="secondary-button" type="button"> Previous</button><span id="browse-page"></span><button id="browse-next" class="secondary-button" type="button">Next </button></nav>
     </section>
     <section class="help-section" aria-labelledby="help-title">

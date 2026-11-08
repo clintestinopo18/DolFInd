@@ -31,7 +31,7 @@ test('rejecting requires a useful reason and saves the reviewed snapshot once',a
  page.get('review-reason').value='  ';await page.submit();assert.equal(page.calls.filter(c=>c.name==='review_report').length,0);
  page.get('review-reason').value='Please add a clearer description.';await page.submit();await page.submit();
  const calls=page.calls.filter(c=>c.name==='review_report');assert.equal(calls.length,1);assert.equal(calls[0].args.p_expected,'snapshot');assert.equal(calls[0].args.p_reason,'Please add a clearer description.');
- assert.equal(page.get('review-dialog').open,false);assert.match(page.get('admin-message').textContent,/added to history/);assert.equal(page.get('admin-grid').children.length,0);
+ assert.equal(page.get('review-dialog').open,false);assert.match(page.get('admin-message').textContent,/added to history/);assert.equal(page.get('admin-grid').children[0].children[0].textContent,'No reports waiting for review');
 });
 test('a failed review retains the reason and does not claim success',async()=>{
  const page=setup({reviewError:'The report changed.'});await flush();page.button('Reject with reason').handlers.click();page.get('review-reason').value='Please remove private information.';await page.submit();
