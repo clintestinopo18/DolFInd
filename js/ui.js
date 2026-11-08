@@ -31,7 +31,7 @@ if (nav) {
     });
 }
 
-if (['login.html', 'register.html'].includes(currentPage)) {
+if (['login.html', 'register.html', 'reset-password.html'].includes(currentPage)) {
     document.querySelectorAll('input[type="password"]').forEach(input => {
         const wrapper = document.createElement('div');
         wrapper.className = 'password-field';
