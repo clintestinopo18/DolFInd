@@ -4,6 +4,20 @@ const reportMessage = document.getElementById('report-message');
 const categorySelect = document.getElementById('category');
 const dateInput = document.getElementById('event-date');
 const retrySetup = document.getElementById('report-retry');
+const editParams = new URLSearchParams(location.search);
+const editing = editParams.has('edit');
+const editId = editParams.get('edit');
+const existingPhoto = document.getElementById('existing-photo');
+let formOwner = null, editVersion = null, existingPhotoPath = null, setupVersion = 0, dirty = false;
+if (editing) {
+    document.title = 'Edit report | DolFind';
+    document.getElementById('report-title').textContent = 'Edit your report';
+    document.getElementById('report-intro').textContent = 'Saving sends this report back for approval and hides it from public listings until approved again.';
+    document.getElementById('submit-report').textContent = 'Save and send for approval';
+    document.getElementById('report-another').hidden = true;
+    const back = document.getElementById('report-back'); back.href = 'my-reports.html'; back.textContent = 'Back to my reports';
+    document.getElementById('report-login').href = 'login.html?next=' + encodeURIComponent('report.html?edit=' + encodeURIComponent(editId));
+}
 let submitting = false;
 let selectedPhoto = null;
 let previewUrl = null;
@@ -44,7 +58,8 @@ function clearPhoto() {
     previewUrl = null;
     photoPreview.removeAttribute('src');
     photoPreview.hidden = true;
-    document.getElementById('remove-photo').hidden = true;
+    document.getElementById('remove-photo').hidden = !existingPhotoPath;
+    existingPhoto.hidden = !existingPhotoPath;
     photoMessage.textContent = 'Optional · JPG, PNG or WebP · Up to 2 MB';
 }
 photoInput.addEventListener('change', async () => {
@@ -58,6 +73,7 @@ photoInput.addEventListener('change', async () => {
         const blob = await window.reportPhotos.compress(file);
         if (version !== photoVersion) return;
         selectedPhoto = blob;
+        existingPhoto.hidden = true;
         previewUrl = URL.createObjectURL(blob);
         photoPreview.src = previewUrl;
         photoPreview.hidden = false;
@@ -67,7 +83,9 @@ photoInput.addEventListener('change', async () => {
         if (version === photoVersion) photoMessage.textContent = error.message;
     } finally { if (version === photoVersion) preparingPhoto = false; }
 });
-document.getElementById('remove-photo').addEventListener('click', () => { clearPhoto(); preparingPhoto = false; });
+document.getElementById('remove-photo').addEventListener('click', () => {
+    existingPhotoPath = null; existingPhoto.replaceChildren(); clearPhoto(); dirty = true;
+});
 
 function localToday() {
     const now = new Date();
@@ -81,12 +99,15 @@ function reportNotice(message, type = '') {
 }
 
 async function prepareReport() {
+    const request = ++setupVersion;
+    if (editing && !/^[1-9]\d{0,18}$/.test(editId || '')) { reportNotice('This report link is invalid.', 'error'); return; }
     retrySetup.hidden = true;
     reportFields.disabled = true;
     document.getElementById('report-login').hidden = true;
     reportNotice('Checking your account…');
     try {
         const { data, error } = await window.supabaseClient.auth.getUser();
+        if (request !== setupVersion) return;
         if (!data?.user) {
             reportNotice('Please log in before reporting an item.');
             document.getElementById('report-login').hidden = false;
@@ -94,15 +115,38 @@ async function prepareReport() {
             return;
         }
         if (error) throw error;
+        formOwner = data.user.id;
         const { data: categories, error: categoryError } = await window.supabaseClient
             .from('categories').select('id,name').order('name');
+        if (request !== setupVersion) return;
         if (categoryError) throw categoryError;
         if (!categories?.length) throw new Error('No categories are available. Please contact the administrator.');
         categorySelect.replaceChildren(new Option('Choose a category', ''));
         categories.forEach(category => categorySelect.add(new Option(category.name, category.id)));
+        if (editing) {
+            const saved = await window.ownedReports.get(editId, formOwner);
+            if (request !== setupVersion) return;
+            if (saved.report.status === 'claimed') throw new Error('Returned reports cannot be edited. Go back to My reports.');
+            editVersion = saved.version;
+            const item = saved.report;
+            document.getElementById('item-title').value = item.title;
+            descriptionInput.value = item.description;
+            document.getElementById('location').value = item.location;
+            document.getElementById('item-type').value = item.item_type;
+            categorySelect.value = String(item.category_id);
+            dateInput.value = item.event_date;
+            existingPhotoPath = item.image_url || null;
+            clearPhoto(); existingPhoto.replaceChildren();
+            if (existingPhotoPath) window.reportPhotos.mount(existingPhoto, item);
+            contactMethod.value = saved.contact?.method || '';
+            updateContactFields();
+            contactValue.value = saved.contact?.value || '';
+            updateDescriptionCount(); dirty = false;
+        }
         reportFields.disabled = false;
-        reportNotice('The photo and contact details are optional. All other fields are required.');
+        reportNotice(editing ? 'Review your details and confirm consent if you are sharing contact information.' : 'The photo and contact details are optional. All other fields are required.');
     } catch (error) {
+        if (request !== setupVersion) return;
         reportNotice(`Could not prepare the form: ${error.message}`, 'error');
         retrySetup.hidden = false;
     }
@@ -110,7 +154,7 @@ async function prepareReport() {
 
 reportForm.addEventListener('submit', async event => {
     event.preventDefault();
-    if (submitting || !reportForm.reportValidity()) return;
+    if (submitting || reportFields.disabled || !formOwner || (editing && !editVersion) || !reportForm.reportValidity()) return;
     if (preparingPhoto) { reportNotice('Please wait while your photo is prepared.'); return; }
     const title = document.getElementById('item-title').value.trim();
     const description = document.getElementById('description').value.trim();
@@ -130,22 +174,26 @@ reportForm.addEventListener('submit', async event => {
         if (contact && !contactConsent.checked) throw new Error('Please agree to share your contact details or choose not to share them.');
     } catch (error) { reportNotice(error.message, 'error'); contactValue.focus(); return; }
     submitting = true;
+    const operation = setupVersion;
     reportFields.disabled = true;
     reportNotice('Submitting your report…');
     try {
         const { data, error } = await window.supabaseClient.auth.getUser();
+        if (operation !== setupVersion) return;
         if (error || !data?.user) {
             document.getElementById('report-login').hidden = false;
             throw new Error('Your session could not be verified. Log in again, then return to this form.');
         }
+        if (data.user.id !== formOwner) throw new Error('Your account changed. Reload this form before saving.');
         if (contact && !window.reportContact.eligible(data.user)) throw new Error('A confirmed @pcu.edu.ph account is required to share contact details.');
-        let photoPath = null;
+        let photoPath = existingPhotoPath;
         if (selectedPhoto) {
             reportNotice('Uploading your photo…');
             photoPath = await window.reportPhotos.upload(selectedPhoto, data.user.id);
         }
+        if (operation !== setupVersion) return;
         reportNotice('Saving your report…');
-        const { error: insertError } = await window.reportContact.submit({
+        const report = {
             user_id: data.user.id,
             category_id: Number(categorySelect.value),
             title, description, location,
@@ -153,7 +201,12 @@ reportForm.addEventListener('submit', async event => {
             event_date: dateInput.value,
             status: 'pending',
             image_url: photoPath
-        }, contact, contactConsent.checked);
+        };
+        const response = editing
+            ? await window.ownedReports.save(editId, formOwner, editVersion, report, contact, contactConsent.checked)
+            : await window.reportContact.submit(report, contact, contactConsent.checked);
+        if (operation !== setupVersion) return;
+        const insertError = response.error;
         if (insertError) {
             if (contact && ['PGRST202', 'PGRST205', '42P01', '42883'].includes(insertError.code)) {
                 throw new Error('Contact sharing is not set up yet. Ask the administrator to run report-contacts.sql, or submit without contact details');
@@ -161,17 +214,19 @@ reportForm.addEventListener('submit', async event => {
             throw insertError;
         }
         reportForm.reset();
+        dirty = false; existingPhotoPath = null; existingPhoto.replaceChildren();
         updateContactFields();
         updateDescriptionCount();
         clearPhoto();
         reportForm.hidden = true;
         document.getElementById('report-success').hidden = false;
-        reportNotice('Report submitted successfully!', 'success');
+        reportNotice(editing ? 'Changes saved. Your report is pending approval again.' : 'Report submitted successfully!', 'success');
     } catch (error) {
-        reportNotice(`Submission could not be confirmed: ${error.message}. Your entries have been kept. If the connection dropped, check with the administrator before resubmitting to avoid duplicates.`, 'error');
+        if (operation !== setupVersion) return;
+        reportNotice(`Save could not be confirmed: ${error.message}. Your entries have been kept. Check My reports before retrying if your connection dropped.`, 'error');
     } finally {
         submitting = false;
-        reportFields.disabled = false;
+        if (operation === setupVersion) reportFields.disabled = false;
     }
 });
 
@@ -181,4 +236,24 @@ document.getElementById('report-another').addEventListener('click', () => {
     reportForm.hidden = false;
     prepareReport();
 });
+reportForm.addEventListener('input', () => { dirty = true; });
+reportForm.addEventListener('change', () => { dirty = true; });
+window.addEventListener('beforeunload', event => {
+    if (dirty && !submitting) { event.preventDefault(); event.returnValue = ''; }
+});
+function clearPrivateForm() {
+    setupVersion++; formOwner = null; editVersion = null; existingPhotoPath = null; dirty = false;
+    reportForm.reset(); clearPhoto(); existingPhoto.replaceChildren(); updateContactFields(); updateDescriptionCount();
+    reportFields.disabled = true;
+    document.getElementById('report-success').hidden = true;
+    reportForm.hidden = false;
+    reportNotice('Please log in again to continue.');
+    document.getElementById('report-login').hidden = false;
+    retrySetup.hidden = false;
+}
+window.supabaseClient.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT' || (event === 'SIGNED_IN' && formOwner && session?.user?.id !== formOwner)) clearPrivateForm();
+});
+window.addEventListener('pagehide', clearPrivateForm);
+window.addEventListener('pageshow', event => { if (event.persisted) prepareReport(); });
 prepareReport();

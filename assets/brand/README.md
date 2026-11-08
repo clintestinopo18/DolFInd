@@ -1,13 +1,8 @@
-# DolFind official brand assets
+# DolFind active brand assets
 
-These are the three images selected by the project owner. The JPEG files are preserved exactly as supplied.
+| Asset | Website use |
+| --- | --- |
+| `dolfind-mascot-badge.jpg` | Browser icon on every page |
+| `dolfind-mascot-transparent.png` | Homepage mascot, with a transparent background |
 
-| Asset | Role | Website use |
-| --- | --- | --- |
-| `dolfind-logo.jpg` | Primary logo: dolphin with magnifying glass and DolFind wordmark | Header and footer on every page |
-| `dolfind-mascot-badge.jpg` | Compact mascot: waving dolphin in a circular badge | Login, registration, and browser icon |
-| `dolfind-mascot-full.jpg` | Full-body mascot: waving dolphin in uniform | Homepage welcome illustration |
-
-Use the primary logo wherever the name needs to be read. Use the compact mascot for small identity placements and the full-body mascot for larger welcome illustrations. Preserve the original proportions, colors, and artwork.
-
-These source JPEGs have light backgrounds, not transparency. The website uses CSS framing to reduce empty space around the wordmark and blending on pale backgrounds for the mascots; the source images remain unchanged. Keep these presentations on light surfaces.
+The header and footer use a text wordmark. Unused logo and original opaque mascot images were removed during cleanup; their originals remain in Git history. See `mascot-cutout.md` for the transparent asset's editing prompt and provenance.

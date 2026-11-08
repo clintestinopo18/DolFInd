@@ -28,6 +28,8 @@ window.reportPhotos = {
         return path;
     },
     mount(card, item) {
+        // Keep text-only report cards compact; details still explain a missing photo.
+        if (!item.image_url && card.classList.contains('item-card')) return;
         const media = document.createElement('div');
         media.className = 'report-media';
         media.textContent = item.image_url ? 'Loading photo…' : 'No photo attached';
@@ -45,6 +47,9 @@ window.reportPhotos = {
                 const url = URL.createObjectURL(data);
                 const img = document.createElement('img');
                 img.alt = `Photo of ${item.title}`;
+                // Card previews start as soon as reports load, without opening a report.
+                img.loading = 'eager';
+                img.decoding = 'async';
                 img.onload = () => URL.revokeObjectURL(url);
                 img.onerror = () => { URL.revokeObjectURL(url); media.textContent = 'Photo unavailable'; };
                 img.src = url;

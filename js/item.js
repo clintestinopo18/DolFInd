@@ -1,5 +1,11 @@
 (() => {
-    const id = new URLSearchParams(location.search).get('id');
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    if (window.reportBrowse) {
+        const back = document.getElementById('back-to-results');
+        back.href = window.reportBrowse.resultLink(params.get('back') || '');
+        back.textContent = params.has('back') ? 'Back to your results' : 'Back to reports';
+    }
     const state = document.getElementById('detail-state');
     const content = document.getElementById('report-detail');
     const retry = document.getElementById('detail-retry');
@@ -28,7 +34,7 @@
             set('detail-category', item.categories?.name || 'Other');
             set('detail-posted', window.publicReports.date(item.created_at));
             set('next-step-title', returned ? 'This report is closed' : item.item_type === 'found' ? 'Does this look like yours?' : 'Have you seen this item?');
-            set('next-step-copy', returned ? 'This item has been marked returned or claimed. You can continue browsing other campus reports.' : item.item_type === 'found' ? 'Ask your campus lost-and-found office about this report. Be ready to describe a detail that only the owner would know.' : 'If you have found a matching item, bring it to your campus lost-and-found office and mention this report.');
+            set('next-step-copy', returned ? 'This item has been marked returned or claimed. You can continue browsing other campus reports.' : item.item_type === 'found' ? 'Use any shared contact details above to reach the reporter. Describe a detail only the owner would know before arranging a handover.' : 'If you found a matching item, use any shared contact details above to reach the reporter and confirm ownership.');
             const photo = document.getElementById('detail-photo'); photo.replaceChildren();
             content.hidden = false; state.hidden = true;
             window.reportPhotos.mount(photo, item);

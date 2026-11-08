@@ -6,10 +6,11 @@
     <title>Review Reports | DolFind</title>
     <link rel="icon" type="image/jpeg" href="assets/brand/dolfind-mascot-badge.jpg">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/design.css">
 </head>
 <body>
     <a class="skip-link" href="#admin-main">Skip to content</a>
-    <header class="navbar"><a class="logo" href="index.html" aria-label="DolFind home"><img src="assets/brand/dolfind-logo.jpg" alt="DolFind" width="1536" height="1024"></a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="report.html">Report an item</a></nav></header>
+    <header class="navbar"><a class="logo" href="index.html" aria-label="DolFind home">DolFind</a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="report.html">Report an item</a></nav></header>
     <main id="admin-main" class="admin-main">
         <p class="eyebrow">ADMINISTRATOR WORKSPACE</p>
         <h1>Review campus reports</h1>
@@ -18,12 +19,22 @@
         <a id="admin-login" href="login.html" hidden>Log in with an administrator account</a>
         <button id="admin-retry" type="button" class="secondary-button" hidden>Retry access check</button>
         <section id="admin-content" hidden aria-label="Report review">
+            <div class="admin-view-switch" aria-label="Workspace view"><button id="admin-review-view" type="button" aria-pressed="true">Review reports</button><button id="admin-history-view" type="button" aria-pressed="false">Review history</button></div>
+            <p id="admin-view-help" class="form-description">Pending reports are shown oldest first. Review the photo and full details before deciding.</p>
             <div class="filter-bar"><div><label for="admin-status">Report status</label><select id="admin-status"><option value="pending">Pending review</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="claimed">Claimed</option></select></div><button id="admin-refresh" type="button" class="secondary-button">Refresh reports</button></div>
             <p id="admin-results" role="status"></p>
-            <div id="admin-grid" class="item-grid"></div>
+            <div id="admin-grid" class="review-grid"></div>
             <div class="admin-pagination"><button id="admin-prev" class="secondary-button" disabled>Previous</button><span id="admin-page">Page 1</span><button id="admin-next" class="secondary-button" disabled>Next</button></div>
         </section>
     </main>
+    <dialog id="review-dialog" class="account-dialog" aria-labelledby="review-dialog-title" aria-describedby="review-dialog-help">
+        <h2 id="review-dialog-title">Review report</h2><p id="review-dialog-name" class="delete-report-name"></p><p id="review-dialog-help"></p>
+        <form id="review-dialog-form">
+            <div id="review-reason-fields" hidden><label for="review-reason">What needs to be fixed?</label><textarea id="review-reason" rows="4" minlength="10" maxlength="1000" aria-describedby="review-reason-help" placeholder="Explain what the reporter should change before submitting again."></textarea><small id="review-reason-help">10–1,000 characters. The reporter will see this reason. Do not include private contact information.</small></div>
+            <p id="review-dialog-message" class="message" role="status"></p>
+            <div class="delete-dialog-actions"><button id="review-cancel" class="secondary-button" type="button">Cancel</button><button id="review-confirm" type="submit">Save review</button></div>
+        </form>
+    </dialog>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/supabase.js"></script><script src="js/photos.js"></script><script src="js/account.js"></script><script src="js/admin.js"></script><script src="js/ui.js"></script>
 </body>
 </html>

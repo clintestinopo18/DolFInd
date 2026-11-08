@@ -147,7 +147,7 @@ if (loginForm) {
 
             const next = new URLSearchParams(window.location.search).get('next');
             // Only allow a local report page as a return destination.
-            window.location.href = next === 'my-reports.html' || /^item\.html\?id=[1-9]\d{0,18}$/.test(next || '') ? next : 'index.html';
+            window.location.href = next === 'my-reports.html' || /^item\.html\?id=[1-9]\d{0,18}$/.test(next || '') || /^report\.html\?edit=[1-9]\d{0,18}$/.test(next || '') ? next : 'index.html';
         } catch (error) {
             showMessage(error.message, "error");
         } finally {

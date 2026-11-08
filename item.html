@@ -7,35 +7,35 @@
   <title>Report details | DolFind</title>
   <link rel="icon" type="image/jpeg" href="assets/brand/dolfind-mascot-badge.jpg">
   <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/design.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="navbar"><a class="logo" href="index.html" aria-label="DolFind home"><img src="assets/brand/dolfind-logo.jpg" alt="DolFind" width="1536" height="1024"></a><nav aria-label="Main navigation"><a href="index.html#items">Browse items</a><a href="report.html">Report an item</a></nav></header>
+  <header class="navbar"><a class="logo" href="index.html" aria-label="DolFind home">DolFind</a><nav aria-label="Main navigation"><a href="index.html#items">Browse items</a><a href="report.html">Report an item</a></nav></header>
   <main id="main" class="detail-main">
-    <a class="back-link" href="index.html#items">← Back to campus reports</a>
+    <a id="back-to-results" class="back-link" href="index.html#items">Back to reports</a>
     <div id="detail-state" class="empty-state" role="status"><h1 id="detail-state-title">Opening report…</h1><p id="detail-state-copy">Getting the details from your campus community.</p><button id="detail-retry" type="button" hidden>Try again</button></div>
     <article id="report-detail" hidden>
-      <div class="detail-heading"><div><p class="eyebrow" id="detail-reference"></p><h1 id="detail-title"></h1></div><button id="copy-report" type="button" class="secondary-button">Copy report link ↗</button></div>
+      <div class="detail-heading"><div><p class="eyebrow" id="detail-reference"></p><h1 id="detail-title"></h1></div><button id="copy-report" type="button" class="secondary-button">Copy report link </button></div>
       <p id="share-message" class="message" role="status"></p>
       <div id="share-fallback" hidden><label for="share-url">Report link</label><input id="share-url" readonly></div>
       <div class="detail-layout">
-        <div><div id="detail-photo" class="detail-photo"></div><p class="photo-caption">Photos and descriptions are supplied by the person who reported the item.</p></div>
+        <div><div id="detail-photo" class="detail-photo"></div></div>
         <section class="detail-panel" aria-labelledby="about-report"><div class="detail-badges"><span id="detail-type" class="badge"></span><span id="detail-status" class="badge"></span></div>
           <h2 id="about-report">About this item</h2><p id="detail-description" class="full-description"></p>
           <dl class="detail-facts"><div><dt>Campus location</dt><dd id="detail-location"></dd></div><div><dt id="detail-date-label">Date lost or found</dt><dd id="detail-date"></dd></div><div><dt>Category</dt><dd id="detail-category"></dd></div><div><dt>Report posted</dt><dd id="detail-posted"></dd></div></dl>
           <section id="reporter-contact" class="reporter-contact" aria-labelledby="reporter-contact-title">
             <h3 id="reporter-contact-title">Contact reporter</h3>
             <p id="contact-message" role="status">Checking contact availability…</p>
-            <a id="contact-login" class="secondary-link" href="login.html" hidden>Log in to view contact details →</a>
+            <a id="contact-login" class="secondary-link" href="login.html" hidden>Log in to view contact details </a>
             <div id="contact-details" hidden><span id="contact-display-label" class="contact-display-label"></span><p id="contact-display-value"></p><a id="contact-action" class="button-link"></a><p class="contact-footnote">Shared by the reporter. Please use these details only to discuss this item.</p></div>
             <button id="contact-retry" type="button" class="secondary-button" hidden>Retry contact details</button>
           </section>
-          <aside class="next-step"><h3 id="next-step-title"></h3><p id="next-step-copy"></p><p class="report-reference-note">Keep the report number handy when asking about this item.</p></aside>
+          <aside class="next-step"><h3 id="next-step-title"></h3><p id="next-step-copy"></p></aside>
         </section>
       </div>
-      <section class="detail-help"><div><p class="eyebrow">LOOKING FOR SOMETHING ELSE?</p><h2>A little help makes a difference.</h2><p>Browse more reports or let your campus community know what you lost or found.</p></div><div class="hero-actions"><a class="button-link" href="index.html#items">Browse reports</a><a class="secondary-link" href="report.html">Report an item →</a></div></section>
     </article>
   </main>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/supabase.js"></script><script src="js/photos.js"></script><script src="js/report-data.js"></script><script src="js/account.js"></script><script src="js/contact.js"></script><script src="js/contact-view.js"></script><script src="js/item.js"></script><script src="js/ui.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/supabase.js"></script><script src="js/photos.js"></script><script src="js/report-data.js"></script><script src="js/account.js"></script><script src="js/contact.js"></script><script src="js/contact-view.js"></script><script src="js/browse-state.js"></script><script src="js/item.js"></script><script src="js/ui.js"></script>
 </body>
 </html>

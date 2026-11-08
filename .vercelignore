@@ -4,6 +4,7 @@
 node_modules
 tests
 supabase
+vercel
 *.md
 **/*.md
 .env

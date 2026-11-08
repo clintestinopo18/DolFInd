@@ -32,28 +32,6 @@ if (nav) {
 }
 
 if (['login.html', 'register.html'].includes(currentPage)) {
-    const container = document.querySelector('.auth-container');
-    container.classList.add('auth-split');
-    const story = document.createElement('aside');
-    story.className = 'auth-story';
-    const mascot = document.createElement('img');
-    mascot.className = 'auth-mascot';
-    mascot.src = 'assets/brand/dolfind-mascot-badge.jpg';
-    mascot.alt = 'DolFind’s friendly dolphin mascot';
-    mascot.width = 1024;
-    mascot.height = 1024;
-    const eyebrow = document.createElement('p');
-    eyebrow.className = 'eyebrow';
-    eyebrow.textContent = 'THE PCU CAMPUS COMMUNITY';
-    const heading = document.createElement('h2');
-    heading.textContent = 'Little things.\nBig relief.';
-    const text = document.createElement('p');
-    text.textContent = 'Your notebook. Their keys. Someone’s favorite bag. Help the things that matter find their way back.';
-    const stamp = document.createElement('div');
-    stamp.className = 'community-stamp';
-    stamp.textContent = '↗ A campus that looks out for each other.';
-    story.append(mascot, eyebrow, heading, text, stamp);
-    container.prepend(story);
     document.querySelectorAll('input[type="password"]').forEach(input => {
         const wrapper = document.createElement('div');
         wrapper.className = 'password-field';
@@ -80,15 +58,9 @@ if (!document.querySelector('footer')) {
     const name = document.createElement('a');
     name.href = 'index.html'; name.className = 'logo';
     name.setAttribute('aria-label', 'DolFind home');
-    const logo = document.createElement('img');
-    logo.src = 'assets/brand/dolfind-logo.jpg';
-    logo.alt = 'DolFind';
-    logo.width = 1536;
-    logo.height = 1024;
-    logo.loading = 'lazy';
-    name.append(logo);
+    name.textContent = 'DolFind';
     const note = document.createElement('small');
-    note.textContent = 'A student campus project · A little help goes a long way.';
+    note.textContent = 'PCU campus lost & found. A student project.';
     footer.append(name, note);
     document.body.append(footer);
 }

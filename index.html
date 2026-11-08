@@ -7,12 +7,13 @@
   <meta name="description" content="Lost something at PCU? Browse campus reports, recognize your belongings, and help lost items find their way home with DolFind.">
   <link rel="icon" type="image/jpeg" href="assets/brand/dolfind-mascot-badge.jpg">
   <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/design.css">
 </head>
-<body>
+<body class="home-page">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="navbar">
-    <a href="index.html" class="logo" aria-label="DolFind home"><img src="assets/brand/dolfind-logo.jpg" alt="DolFind" width="1536" height="1024"></a>
-    <nav aria-label="Main navigation"><a href="#items">Browse items</a><a href="report.html">Report an item</a><a href="admin.html" id="admin-link" hidden>Admin dashboard</a><a href="login.html" id="login-link">Log in</a><a class="button-link" id="register-link" href="register.html">Join the community</a>
+    <a href="index.html" class="logo" aria-label="DolFind home">DolFind</a>
+    <nav aria-label="Main navigation"><a href="#items">Browse</a><a href="report.html">Report an item</a><a href="admin.html" id="admin-link" hidden>Admin</a><a href="login.html" id="login-link">Log in</a><a class="button-link" id="register-link" href="register.html">Sign up</a>
       <div class="account-menu" id="account-menu" hidden>
         <button id="account-toggle" class="account-avatar" type="button" aria-label="Open account menu" aria-expanded="false" aria-controls="account-dropdown">U</button>
         <div id="account-dropdown" class="account-dropdown" hidden>
@@ -36,23 +37,54 @@
     <form id="profile-settings-form"><label for="settings-name">Full name</label><input id="settings-name" autocomplete="name" minlength="2" maxlength="100" required><p class="form-description">Update the name associated with your reports. Your school email and account role cannot be changed here.</p><button id="save-profile" type="submit">Save changes</button><p id="settings-message" class="message" role="status" aria-live="polite"></p></form>
   </dialog>
   <main id="main">
+    <section class="hero landing-hero" aria-labelledby="hero-title">
+      <div class="hero-content">
+        <p class="hero-kicker">The PCU lost &amp; found community</p>
+        <h1 id="hero-title">Lost something?<br>Let&#8217;s bring it <em>home.</em></h1>
+        <p class="hero-copy">Find lost belongings or report an item you found at PCU.</p>
+        <div class="hero-actions"><a class="button-link" href="#items">Find an item</a><a class="hero-report-action" href="report.html">Report an item</a></div>
+        
+      </div>
+      <div class="hero-mascot-wrap">
+        <img class="campus-mascot" src="assets/brand/dolfind-mascot-transparent.png" alt="DolFind dolphin mascot waving" width="1254" height="1254" fetchpriority="high">
+      </div>
+    </section>
     <p id="page-message" class="page-message" role="status" hidden></p>
-    <section class="hero">
-      <div><p class="eyebrow hero-eyebrow"><span class="status-dot" aria-hidden="true"></span> THE PCU LOST & FOUND COMMUNITY</p><h1>Lost something?<br>Let’s bring it <em>home.</em></h1><p class="hero-copy">From the notebook you left behind to the keys someone picked up. Find what matters, with a little help from your campus.</p><div class="hero-actions"><a class="button-link" href="#items">Find an item <span aria-hidden="true">↗</span></a><a class="secondary-link" href="report.html">Report an item →</a></div><p class="hero-note">Open to browse. School email required to report.</p></div>
-      <div class="hero-art"><div class="art-label">YOUR CAMPUS FINDING FRIEND</div><img class="hero-mascot" src="assets/brand/dolfind-mascot-full.jpg" alt="DolFind’s blue dolphin mascot waving hello" width="1024" height="1024" fetchpriority="high"><div class="float-label">Together, we find it.</div></div>
-    </section>
-    <div class="community-strip" aria-label="How DolFind works"><span><b>01</b> Spot a familiar item</span><span><b>02</b> Read the full report</span><span><b>03</b> Help it find its way home</span></div>
-    <section class="browse-section" id="items" aria-labelledby="items-title"><div class="section-heading"><div><p class="eyebrow">THE CAMPUS NOTICEBOARD</p><h2 id="items-title">A familiar find might be here.</h2></div><p>Every card has a story.<br>Open a report to see the details.</p></div>
-      <div class="browse-filters"><div class="search-wrap"><label for="search">Search the noticeboard</label><input id="search" type="search" maxlength="120" placeholder="An item, a color, a campus location…"></div><div><label for="type-filter">Report type</label><select id="type-filter"><option value="all">Lost & found</option><option value="lost">Lost items</option><option value="found">Found items</option></select></div><div><label for="category-filter">Category</label><select id="category-filter"><option value="all">All categories</option></select></div><div><label for="status-filter">Status</label><select id="status-filter"><option value="all">All public reports</option><option value="approved">Open reports</option><option value="claimed">Returned / claimed</option></select></div></div>
+    <section class="browse-section" id="items" aria-labelledby="items-title"><div class="section-heading"><div><h2 id="items-title">Campus reports</h2><p>Browse lost, found, and returned items.</p></div></div>
+      <form id="browse-search-form" class="browse-search" action="index.html#items" method="get" role="search">
+        <div><label for="search">Search campus reports</label><input id="search" name="search" type="search" maxlength="120" placeholder="Search by item, color, or campus location"></div>
+        <button type="submit">Search reports</button>
+      </form>
+      <div class="browse-options">
+        <div class="report-type-switch" role="group" aria-label="Report type">
+          <button type="button" data-report-type="all" aria-pressed="true">All reports</button>
+          <button type="button" data-report-type="lost" aria-pressed="false">Lost</button>
+          <button type="button" data-report-type="found" aria-pressed="false">Found</button>
+        </div>
+        <input id="type-filter" type="hidden" value="all">
+        <details id="more-filters" class="more-filters">
+          <summary id="more-filters-label">More filters</summary>
+          <div class="browse-filters">
+            <div><label for="category-filter">Category</label><select id="category-filter"><option value="all">All categories</option></select></div>
+            <div><label for="status-filter">Status</label><select id="status-filter"><option value="all">All public reports</option><option value="approved">Open reports</option><option value="claimed">Returned / claimed</option></select></div>
+            <div><label for="sort-filter">Sort by</label><select id="sort-filter"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></div>
+          </div>
+        </details>
+      </div>
       <p id="category-note" class="form-description" hidden>Categories are temporarily unavailable. You can still search and browse reports.</p>
-      <div class="browse-toolbar"><p id="results-message" role="status" tabindex="-1">Loading campus reports…</p><div class="sort-controls"><button type="button" class="text-button" data-clear-filters>Clear filters</button><label for="sort-filter" class="sr-only">Sort reports</label><select id="sort-filter"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></div></div>
+      <div class="browse-toolbar"><p id="results-message" role="status" tabindex="-1">Loading campus reports...</p><button type="button" class="text-button" data-clear-filters hidden>Clear filters</button></div>
       <div id="item-grid" class="item-grid"></div><button id="retry-button" class="secondary-button" type="button" hidden>Try again</button>
-      <div id="empty-reports" class="empty-state" hidden><span class="empty-symbol" aria-hidden="true">⌕</span><h3>No matching items yet</h3><p>Try a different word or clear your filters. If your item isn’t here, you can create a report.</p><div class="hero-actions"><button type="button" class="secondary-button" data-clear-filters>Clear filters</button><a class="button-link" href="report.html">Report an item</a></div></div>
-      <nav id="browse-pagination" class="browse-pagination" aria-label="Report pages" hidden><button id="browse-prev" class="secondary-button" type="button">← Previous</button><span id="browse-page"></span><button id="browse-next" class="secondary-button" type="button">Next →</button></nav>
+      <div id="empty-reports" class="empty-state" hidden><h3>No matching items yet</h3><p>Try a different word or clear your filters. If your item isn’t here, you can create a report.</p><div class="hero-actions"><button type="button" class="secondary-button" data-clear-filters>Clear filters</button><a class="button-link" href="report.html">Report an item</a></div></div>
+      <nav id="browse-pagination" class="browse-pagination" aria-label="Report pages" hidden><button id="browse-prev" class="secondary-button" type="button"> Previous</button><span id="browse-page"></span><button id="browse-next" class="secondary-button" type="button">Next </button></nav>
     </section>
-    <section class="how-section"><p class="eyebrow">A LITTLE KINDNESS, A SIMPLE PROCESS</p><h2>Good things find their way home.</h2><div class="steps"><article><span>01</span><h3>Look around</h3><p>Search reports for a familiar item or the place you last saw it.</p></article><article><span>02</span><h3>Check the details</h3><p>Compare the description, location, and date before identifying an item as yours.</p></article><article><span>03</span><h3>Return with care</h3><p>Verify ownership and arrange handovers through your campus lost-and-found office.</p></article></div></section>
+    <section class="help-section" aria-labelledby="help-title">
+      <h2 id="help-title">Need a hand?</h2>
+      <details><summary>How do I contact a reporter?</summary><p>Open a report and log in with your verified PCU account. You can see any contact details the reporter chose to share. If none are listed, check back later.</p></details>
+      <details><summary>Why is my report not showing?</summary><p>New reports need administrator approval. Check <a href="my-reports.html">My reports</a> for the current status.</p></details>
+      <details><summary>How do I confirm an item belongs to me?</summary><p>Compare its description, date, and location. Share a distinguishing detail with the reporter before arranging a handover.</p></details>
+    </section>
   </main>
-  <footer><a class="logo" href="index.html" aria-label="DolFind home"><img src="assets/brand/dolfind-logo.jpg" alt="DolFind" width="1536" height="1024" loading="lazy"></a><p>Less searching. More belonging.</p><small>GROUP PROJECT</small></footer>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/supabase.js"></script><script src="js/photos.js"></script><script src="js/report-data.js"></script><script src="js/account.js"></script><script src="js/home.js"></script><script src="js/ui.js"></script>
+  <footer><a class="logo" href="index.html" aria-label="DolFind home">DolFind</a><p>PCU campus lost and found</p><small>Group Project</small></footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/supabase.js"></script><script src="js/photos.js"></script><script src="js/report-data.js"></script><script src="js/account.js"></script><script src="js/browse-state.js"></script><script src="js/home.js"></script><script src="js/ui.js"></script>
 </body>
 </html>

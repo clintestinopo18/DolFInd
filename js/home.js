@@ -15,6 +15,7 @@
         const element = document.getElementById(id);
         if (key !== 'category' && params.has(key)) {
             if (key === 'search') element.value = params.get(key).slice(0, 120);
+            else if (key === 'type') { if (['all', 'lost', 'found'].includes(params.get(key))) element.value = params.get(key); }
             else if ([...element.options].some(option => option.value === params.get(key))) element.value = params.get(key);
         }
     });
@@ -23,7 +24,18 @@
     function filters() {
         return Object.fromEntries(Object.entries(controls).map(([key, id]) => [key, document.getElementById(id).value]));
     }
+    function syncFilterControls() {
+        const values = filters();
+        document.querySelectorAll('[data-report-type]').forEach(button => {
+            button.setAttribute('aria-pressed', String(button.dataset.reportType === values.type));
+        });
+        const count = Number(values.category !== 'all') + Number(values.status !== 'all') + Number(values.sort !== 'newest');
+        document.getElementById('more-filters-label').textContent = count ? 'More filters (' + count + ')' : 'More filters';
+        const active = Boolean(values.search.trim() || values.type !== 'all' || count);
+        document.querySelectorAll('[data-clear-filters]').forEach(button => { button.hidden = !active; });
+    }
     function rememberFilters() {
+        syncFilterControls();
         const query = new URLSearchParams();
         Object.entries(filters()).forEach(([key, value]) => {
             if (value && value !== 'all' && !(key === 'sort' && value === 'newest')) query.set(key, value);
@@ -34,7 +46,7 @@
     function renderCard(item) {
         const card = document.createElement('a');
         card.className = 'item-card report-link';
-        card.href = `item.html?id=${encodeURIComponent(item.id)}`;
+        card.href = window.reportBrowse.itemLink(item.id, location.search);
         const body = document.createElement('div'); body.className = 'card-body';
         const top = document.createElement('div'); top.className = 'card-topline';
         const badge = document.createElement('span');
@@ -45,11 +57,11 @@
         const title = document.createElement('h3'); title.textContent = item.title;
         const description = document.createElement('p');
         description.className = 'card-description'; description.textContent = item.description;
-        const location = document.createElement('p'); location.className = 'card-location'; location.textContent = item.location;
+        const place = document.createElement('p'); place.className = 'card-location'; place.textContent = item.location;
         const bottom = document.createElement('div'); bottom.className = 'card-bottom';
         const date = document.createElement('span'); date.textContent = window.publicReports.date(item.event_date);
-        const action = document.createElement('span'); action.className = 'card-action'; action.textContent = 'View report ↗';
-        bottom.append(date, action); body.append(top, title, description, location, bottom); card.append(body);
+        const action = document.createElement('span'); action.className = 'card-action'; action.textContent = 'View report ';
+        bottom.append(date, action); body.append(top, title, description, place, bottom); card.append(body);
         grid.append(card); window.reportPhotos.mount(card, item);
     }
     async function loadReports() {
@@ -83,6 +95,17 @@
         } finally { if (version === request) grid.setAttribute('aria-busy', 'false'); }
     }
     function changed() { clearTimeout(searchTimer); page = 0; loadReports(); }
+    document.querySelectorAll('[data-report-type]').forEach(button => button.addEventListener('click', () => {
+        if (document.getElementById('type-filter').value === button.dataset.reportType) return;
+        document.getElementById('type-filter').value = button.dataset.reportType;
+        changed();
+    }));
+    document.getElementById('browse-search-form').addEventListener('submit', event => {
+        event.preventDefault();
+        changed();
+        document.getElementById('items').scrollIntoView({ block: 'start' });
+        results.focus({ preventScroll: true });
+    });
     document.getElementById('search').addEventListener('input', () => {
         request++; clearTimeout(searchTimer); searchTimer = setTimeout(changed, 300);
     });
@@ -101,6 +124,7 @@
         history.replaceState(null, '', location.pathname + location.search);
     }
     async function initialize() {
+        if (['category', 'status', 'sort'].some(key => params.has(key))) document.getElementById('more-filters').open = true;
         try {
             const { data, error } = await window.supabaseClient.from('categories').select('id,name').order('name');
             if (error) throw error;

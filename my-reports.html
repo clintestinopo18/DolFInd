@@ -6,20 +6,28 @@
   <title>My reports | DolFind</title>
   <link rel="icon" type="image/jpeg" href="assets/brand/dolfind-mascot-badge.jpg">
   <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/design.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="navbar"><a class="logo" href="index.html" aria-label="DolFind home"><img src="assets/brand/dolfind-logo.jpg" alt="DolFind" width="1536" height="1024"></a><nav aria-label="Main navigation"><a href="index.html#items">Browse items</a><a href="report.html">Report an item</a></nav></header>
+  <header class="navbar"><a class="logo" href="index.html" aria-label="DolFind home">DolFind</a><nav aria-label="Main navigation"><a href="index.html#items">Browse items</a><a href="report.html">Report an item</a></nav></header>
   <main id="main" class="admin-main my-reports-main">
-    <div class="section-heading"><div><p class="eyebrow">YOUR CAMPUS NOTICEBOARD</p><h1>My reports</h1><p class="form-description">Track the reports you submitted and remove any you no longer want to keep.</p></div><a class="button-link" href="report.html">Report an item →</a></div>
+    <div class="section-heading"><div><h1>My reports</h1><p class="form-description">Check approval status and manage your reports.</p></div><a class="button-link" href="report.html">Report an item </a></div>
     <p id="my-reports-notice" class="message" role="status" aria-live="polite"></p>
-    <a id="my-reports-login" class="secondary-link" href="login.html?next=my-reports.html" hidden>Log in to view your reports →</a>
+    <a id="my-reports-login" class="secondary-link" href="login.html?next=my-reports.html" hidden>Log in to view your reports </a>
     <div class="filter-bar"><div><label for="my-status">Report status</label><select id="my-status"><option value="all">All my reports</option><option value="pending">Pending review</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="claimed">Returned / claimed</option></select></div><button id="my-refresh" class="secondary-button" type="button">Refresh reports</button></div>
     <p id="my-results" role="status" tabindex="-1">Checking your account…</p>
     <div id="my-report-grid" class="item-grid"></div>
     <div id="my-empty" class="empty-state" hidden><h2>No reports here yet</h2><p>Reports you submit will appear here. Try another status or create your first report.</p><a href="report.html" class="button-link">Report an item</a></div>
-    <nav id="my-pagination" class="browse-pagination" aria-label="My report pages" hidden><button id="my-prev" type="button" class="secondary-button">← Previous</button><span id="my-page"></span><button id="my-next" type="button" class="secondary-button">Next →</button></nav>
+    <nav id="my-pagination" class="browse-pagination" aria-label="My report pages" hidden><button id="my-prev" type="button" class="secondary-button"> Previous</button><span id="my-page"></span><button id="my-next" type="button" class="secondary-button">Next </button></nav>
   </main>
+  <dialog id="return-report-dialog" class="account-dialog" aria-labelledby="return-report-heading" aria-describedby="return-report-description">
+    <h2 id="return-report-heading">Has this item been returned?</h2>
+    <p id="return-report-name" class="delete-report-name"></p>
+    <p id="return-report-description">Mark it returned only after the owner has their item back. The report stays in the history, closes to new inquiries, and can no longer be edited.</p>
+    <p id="return-report-message" class="message" role="status"></p>
+    <div class="delete-dialog-actions"><button id="cancel-return-report" class="secondary-button" type="button" autofocus>Keep open</button><button id="confirm-return-report" type="button" disabled>Mark as returned</button></div>
+  </dialog>
   <dialog id="delete-report-dialog" class="account-dialog" aria-labelledby="delete-report-heading" aria-describedby="delete-report-description">
     <p class="eyebrow">REMOVE YOUR REPORT</p><h2 id="delete-report-heading">Delete this report?</h2>
     <p id="delete-report-name" class="delete-report-name"></p>
