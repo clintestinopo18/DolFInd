@@ -12,22 +12,42 @@ if (nav) {
     toggle.textContent = 'Menu';
     toggle.setAttribute('aria-controls', nav.id);
     toggle.setAttribute('aria-expanded', 'false');
-    toggle.addEventListener('click', () => {
-        const open = toggle.getAttribute('aria-expanded') !== 'true';
+    function setMenuOpen(open) {
         toggle.setAttribute('aria-expanded', String(open));
         nav.classList.toggle('nav-open', open);
         toggle.textContent = open ? 'Close menu' : 'Menu';
+        if (!open) window.closeAccountMenu?.();
+    }
+    toggle.addEventListener('click', () => {
+        setMenuOpen(toggle.getAttribute('aria-expanded') !== 'true');
     });
     nav.before(toggle);
+    // Keep navigation available if this script has not loaded.
+    nav.classList.add('nav-collapsible');
     nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-        if (nav.classList.contains('nav-open')) {
-            nav.classList.remove('nav-open'); toggle.setAttribute('aria-expanded', 'false'); toggle.textContent = 'Menu';
-        }
+        if (nav.classList.contains('nav-open')) setMenuOpen(false);
     }));
     document.addEventListener('keydown', event => {
         if (event.key === 'Escape' && nav.classList.contains('nav-open')) {
             toggle.click(); toggle.focus();
         }
+    });
+    const compactNavigation = window.matchMedia('(max-width: 980px)');
+    // A breakpoint can hide the focused control before its change event fires.
+    let navigationFocus = null;
+    document.addEventListener('focusin', event => {
+        navigationFocus = event.target === toggle || nav.contains(event.target) ? event.target : null;
+    });
+    document.addEventListener('pointerdown', event => {
+        if (event.target !== toggle && !nav.contains(event.target)) navigationFocus = null;
+    });
+    compactNavigation.addEventListener('change', () => {
+        const focusedControl = navigationFocus;
+        setMenuOpen(false);
+        if (!focusedControl) return;
+        if (compactNavigation.matches) toggle.focus();
+        else if (focusedControl === toggle) nav.querySelector('a')?.focus();
+        else if (focusedControl.closest('.account-dropdown')) document.getElementById('account-toggle')?.focus();
     });
 }
 
