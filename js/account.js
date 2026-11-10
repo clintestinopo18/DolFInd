@@ -9,6 +9,13 @@
         dialogTemplate.innerHTML = "  <dialog id=\"profile-dialog\" class=\"account-dialog\" aria-labelledby=\"profile-heading\">\n    <button class=\"dialog-close secondary-button\" type=\"button\" data-close-dialog aria-label=\"Close profile\">×</button>\n    <p class=\"eyebrow\">YOUR CAMPUS ACCOUNT</p><h2 id=\"profile-heading\">My profile</h2>\n    <dl class=\"profile-details\"><dt>Full name</dt><dd id=\"profile-name\">—</dd><dt>Email</dt><dd id=\"profile-email\">—</dd><dt>Role</dt><dd id=\"profile-role\">—</dd></dl>\n    <button type=\"button\" id=\"edit-profile\">Edit profile</button>\n  </dialog>\n  <dialog id=\"settings-dialog\" class=\"account-dialog\" aria-labelledby=\"settings-heading\">\n    <button class=\"dialog-close secondary-button\" type=\"button\" data-close-dialog aria-label=\"Close settings\">×</button>\n    <p class=\"eyebrow\">ACCOUNT SETTINGS</p><h2 id=\"settings-heading\">Personal details</h2>\n    <form id=\"profile-settings-form\"><label for=\"settings-name\">Full name</label><input id=\"settings-name\" autocomplete=\"name\" minlength=\"2\" maxlength=\"100\" required><p class=\"form-description\">This name appears on your account.</p><button id=\"save-profile\" type=\"submit\">Save changes</button><p id=\"settings-message\" class=\"message\" role=\"status\" aria-live=\"polite\"></p></form>\n  </dialog>";
         document.body.append(dialogTemplate.content.cloneNode(true));
     }
+    const page = location.pathname.split('/').pop();
+    if (['report.html', 'admin.html', 'my-reports.html'].includes(page)) {
+        const edit = new URLSearchParams(location.search).get('edit');
+        const destination = page === 'report.html' && /^[1-9]\d{0,18}$/.test(edit || '')
+            ? `report.html?edit=${edit}` : page;
+        document.getElementById('login-link').href = 'login.html?next=' + encodeURIComponent(destination);
+    }
     const root = document.getElementById('account-menu');
     const toggle = document.getElementById('account-toggle');
     const dropdown = document.getElementById('account-dropdown');
@@ -16,6 +23,9 @@
     myReportsLink.href = 'my-reports.html'; myReportsLink.className = 'account-reports-link';
     myReportsLink.textContent = 'My reports';
     document.getElementById('open-settings').before(myReportsLink);
+    document.querySelectorAll('.navbar nav a').forEach(link => {
+        if (link.getAttribute('href') === page) link.setAttribute('aria-current', 'page');
+    });
     const profileDialog = document.getElementById('profile-dialog');
     const settingsDialog = document.getElementById('settings-dialog');
     let accountUser = null;

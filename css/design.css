@@ -23,6 +23,8 @@ h1, h2, h3 { font-weight: 650; }
 .navbar nav .button-link { color: #fff; padding: 10px 18px; }
 .navbar .account-avatar { width: 42px; height: 42px; border-width: 1px; background: #edf5fb; }
 .navbar nav a[aria-current] { text-decoration-thickness: 2px; }
+.navbar .menu-toggle { height: 46px; padding-block: 0; }
+.form-link a, .help-section p a { text-decoration: underline; text-underline-offset: 3px; }
 .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .3px; text-transform: none; color: var(--muted); }
 button, .button-link { border-radius: 8px; font-weight: 600; font-size: 14px; box-shadow: none; }
 button:not(:disabled):hover, .button-link:hover { box-shadow: none; }

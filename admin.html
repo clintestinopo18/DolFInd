@@ -7,6 +7,7 @@
     <link rel="icon" type="image/jpeg" href="assets/brand/dolfind-mascot-badge.jpg">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/design.css">
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
     <a class="skip-link" href="#admin-main">Skip to content</a>
@@ -16,7 +17,7 @@
         <h1>Review campus reports</h1>
         <p class="form-description">Check descriptions for accuracy and personal information before publishing. Approved reports appear on the home page; rejected reports remain private.</p>
         <p id="admin-message" class="message" role="status" aria-live="polite">Checking administrator access…</p>
-        <a id="admin-login" href="login.html" hidden>Log in with an administrator account</a>
+        <a id="admin-login" href="login.html?next=admin.html" hidden>Log in with an administrator account</a>
         <button id="admin-retry" type="button" class="secondary-button" hidden>Retry access check</button>
         <section id="admin-content" hidden aria-label="Report review">
             <div class="admin-view-switch" aria-label="Workspace view"><button id="admin-review-view" type="button" aria-pressed="true">Review reports</button><button id="admin-history-view" type="button" aria-pressed="false">Review history</button></div>
@@ -35,6 +36,7 @@
             <div class="delete-dialog-actions"><button id="review-cancel" class="secondary-button" type="button">Cancel</button><button id="review-confirm" type="submit">Save review</button></div>
         </form>
     </dialog>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/supabase.js"></script><script src="js/photos.js"></script><script src="js/account.js"></script><script src="js/admin.js"></script><script src="js/ui.js"></script>
+    <script src="js/ui.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/config.js"></script><script src="js/supabase.js"></script><script src="js/photos.js"></script><script src="js/account.js"></script><script src="js/admin.js"></script>
 </body>
 </html>

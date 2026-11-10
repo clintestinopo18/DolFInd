@@ -7,6 +7,7 @@
     <link rel="icon" type="image/jpeg" href="assets/brand/dolfind-mascot-badge.jpg">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/design.css">
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body class="auth-page">
     <header class="navbar"><a class="logo" href="index.html" aria-label="DolFind home">DolFind</a><nav aria-label="Main navigation"><a href="index.html#items">Browse items</a></nav></header>
@@ -18,7 +19,7 @@
             <h1 id="report-title">Report an item</h1>
             <p id="report-intro" class="form-description">Reports appear publicly after administrator approval.</p>
             <p id="report-message" class="message" role="status" aria-live="polite">Checking your account…</p>
-            <a id="report-login" href="login.html" hidden>Log in to submit a report</a>
+            <a id="report-login" href="login.html?next=report.html" hidden>Log in to submit a report</a>
             <button id="report-retry" type="button" class="secondary-button" hidden>Retry setup</button>
             <form id="report-form">
                 <fieldset id="report-fields" disabled>
@@ -63,7 +64,8 @@
             <div id="report-success" hidden><p>Your report is pending administrator approval. It won’t appear in public listings until approved.</p><a href="my-reports.html" class="button-link">View my reports</a><button id="report-another" class="secondary-button" type="button">Report another item</button></div>
         </section>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/config.js"></script><script src="js/supabase.js"></script><script src="js/photos.js"></script><script src="js/account.js"></script><script src="js/contact.js"></script><script src="js/owned-reports.js"></script><script src="js/report.js"></script><script src="js/ui.js"></script>
+    <script src="js/ui.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script><script src="js/supabase.js"></script><script src="js/photos.js"></script><script src="js/account.js"></script><script src="js/contact.js"></script><script src="js/owned-reports.js"></script><script src="js/report.js"></script>
 </body>
 </html>

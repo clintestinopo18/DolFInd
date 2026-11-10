@@ -393,7 +393,7 @@ input::file-selector-button { border: 0; background: #d9edfc; color: #145a8b; pa
     .logo img { width: 164px; height: 64px; }
     .menu-toggle { display: block; margin-left: auto !important; }
     .navbar nav { width: 100%; align-items: stretch; gap: 6px; flex-direction: column; padding-top: 10px; border-top: 1px solid var(--border); }
-    .navbar nav.nav-collapsible { display: none; }
+    .js .navbar nav { display: none; }
     .navbar nav.nav-open { display: flex; }
     .navbar nav a { padding: 10px; }
     .hero { grid-template-columns: 1fr; padding: 40px 24px; }
@@ -578,7 +578,7 @@ footer { max-width: none; font-size: 13px; }
     .navbar { flex-wrap: wrap; }
     .menu-toggle { display: block; margin-left: auto !important; }
     .navbar nav { width: 100%; align-items: stretch; gap: 6px; flex-direction: column; padding-top: 12px; border-top: 1px solid var(--border); }
-    .navbar nav.nav-collapsible { display: none; }
+    .js .navbar nav { display: none; }
     .navbar nav.nav-open { display: flex; }
     .navbar nav a { padding: 10px; }
     .account-dropdown { right: auto; left: 0; }

@@ -22,11 +22,10 @@ if (nav) {
         setMenuOpen(toggle.getAttribute('aria-expanded') !== 'true');
     });
     nav.before(toggle);
-    // Keep navigation available if this script has not loaded.
-    nav.classList.add('nav-collapsible');
-    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-        if (nav.classList.contains('nav-open')) setMenuOpen(false);
-    }));
+    // Account links may be added after this lightweight UI script runs.
+    nav.addEventListener('click', event => {
+        if (event.target.closest('a') && nav.classList.contains('nav-open')) setMenuOpen(false);
+    });
     document.addEventListener('keydown', event => {
         if (event.key === 'Escape' && nav.classList.contains('nav-open')) {
             toggle.click(); toggle.focus();
